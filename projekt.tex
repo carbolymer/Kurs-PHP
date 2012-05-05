@@ -42,7 +42,7 @@ pdfstartpage=1,pdfpagemode=UseOutlines,bookmarks=true,bookmarksopen=true]{hyperr
 
 \maketitle
 \section{Wstęp}
-Ten krótki kurs ma na celu przedstawienie sposobu pisania stron w przy użyciu technologii Apache + MySQL + PHP (w skrócie AMP) - jednego z najpopularniejszych zestawów oprogramowania służącego do uruchamiania serwisów WWW. Ten kurs jest bardzo okrojony i zawiera tylko wybrane elementy języka PHP oraz MySQL dlatego aby w pełni zrozumieć metodykę tworzenia aplikacji w oparciu o te  języki dobrze jest się wspierać dokumentacjami technicznymi, innymi kursami dostępnymi w internecie, a także specjalistycznymi forami dyskusyjnymi. \\
+Ten krótki kurs ma na celu przedstawienie sposobu pisania stron przy użyciu technologii Apache + MySQL + PHP (w skrócie AMP) - jednego z najpopularniejszych zestawów oprogramowania służącego do uruchamiania serwisów WWW. Ten kurs jest bardzo okrojony i zawiera tylko wybrane elementy języka PHP oraz MySQL dlatego aby w pełni zrozumieć metodykę tworzenia aplikacji w oparciu o te  języki dobrze jest się wspierać dokumentacjami technicznymi, innymi kursami dostępnymi w internecie, a także specjalistycznymi forami dyskusyjnymi. \\
 Dokumentacja PHP: \href{http://www.php.net/manual/pl/}{http://www.php.net/manual/pl/} \\
 Dokumentacja MySQL: \href{http://dev.mysql.com/doc/refman/5.5/en/index.html}{http://dev.mysql.com/doc/refman/5.5/en/index.html} \\
 Dokumentacja Apache: \href{http://httpd.apache.org/docs/2.4/}{http://httpd.apache.org/docs/2.4/} \\
@@ -75,6 +75,7 @@ Gdy użytkownik strony uruchamia przeglądarkę i wpisuje w pasek adresu, adres 
 \subsection{Konfiguracja}
 \subsubsection{Konfiguracja Apache}
 \subsubsection{Konfiguracja PHP}
+%TODO konfiguracja timezone
 \subsubsection{Konfiguracja MySQL}
 % ustawianie hasła roota
 \subsection{Instalacja phpMyAdmin}
@@ -174,7 +175,7 @@ CREATE TABLE `forum`.`users` (
 	`name` VARCHAR( 255 ) NOT NULL ,
 	`login` CHAR( 255 ) NOT NULL ,
 	`password` CHAR( 255 ) NOT NULL ,
-	`id_admin` ENUM( '1', '0' ) NOT NULL ,
+	`is_admin` ENUM( '1', '0' ) NOT NULL ,
 	UNIQUE (
 		`name` ,
 		`login` 
