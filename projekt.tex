@@ -36,7 +36,6 @@ pdfstartpage=1,pdfpagemode=UseOutlines,bookmarks=true,bookmarksopen=true]{hyperr
 \begin{document}
 
 \pagestyle{fancy}
-%\rhead{Prawa strona nagłówka. Strona nr \thepage}
 \lhead{Krótki kurs tworzenia stron w technologii PHP}
 
 
@@ -76,6 +75,7 @@ Gdy użytkownik strony uruchamia przeglądarkę i wpisuje w pasek adresu, adres 
 \subsubsection{Konfiguracja Apache}
 \subsubsection{Konfiguracja PHP}
 %TODO konfiguracja timezone
+%TODO ustawienie error_level i notice
 \subsubsection{Konfiguracja MySQL}
 % ustawianie hasła roota
 \subsection{Instalacja phpMyAdmin}
@@ -211,5 +211,92 @@ CREATE TABLE `forum`.`posts` (
 \end{minted}
 Składnia jest analogiczna jak w poprzednim wypadku. Powyższe trzy zapytania \textit{CREATE} tworzą już kompletną, ale jeszcze pustą strukturę naszej bazy danych.
 \section{Kod strony}
+\subsection{Składnia języka PHP}
+Przykładowy kod strony w języku php: \\
+\begin{minted}[linenos=true, bgcolor=code]{php}
+<?php
+$jeden = 'bar';
+$dwa = "foo";
+$trzy = null;
+$liczba = "4";
+$liczba2 = 3;
+if($liczba % 2 == 0)
+{
+	echo 'liczba jest podzielna przez 2 <br />';
+}
+else
+{
+	echo 'liczba nie jest podzielna przez 2 <br />';
+}
+
+if($liczba == 4)
+	echo 'Ta liczba to 4!';
+elseif($liczba < 4)
+	echo 'Ta liczba jest mniejsza od 4.<br />';
+else
+	echo 'Ta liczba jest wieksza od 4 <br />';
+echo $jeden.$dwa.($liczba+$liczba2);
+?>
+\end{minted}
+Zapisując powyższy kod jako plik \textit{index.php} w katalogu \textit{DocumentRoot} zdefiniowanym przy Konfiguracji Apache, a następnie wchodząc na stronę http://127.0.0.1/ otrzymamy wynik:
+\begin{minted}{php}
+liczba jest podzielna przez 2
+Ta liczba to 4!
+barfoo7
+\end{minted}
+Kod PHP aby został wykonany musi być zawarty w tagach \textit{<?php ?>}.
+W linijkach 2 - 6 zostały zdefiniowane zmienne. Nazwy zmiennych muszą być poprzedzone znakiem \$ zarówno przy definiowaniu jak i późniejszym odwoływaniu się do nich. Ciąg znaków przypisywany do zmiennej można zawszeć w apostrofach lub cudzysłowach. Między tymi dwoma sposobami jest niewielka różnica: gdy zawrzemy ciąg znaków w cudzysłowach PHP przeszukuje zawartość ciągu pod kątem znaków specjalnych (np.: \textbackslash n \textbackslash r itp.), w przypadku apostrofów przeszukiwanie nie jest dokonywane (ta forma jest nieco szybsza). W liniach 7 - 21 są umieszczone struktury \textit{if - else}. W linii 7 jest wykonywane modulo na zmiennej \textit{\$liczba}, a następnie wynik tej operacji jest przyrównywany do zera. Należy zwrócić uwagę iż w PHP brak jest typów zmiennych - zależnie od potrzeb zmienna jest automatycznie traktowana jako ciąg znaków, lub jako liczba. W linii 9 do wyświetlania jest używana struktura języka: \textit{echo}. W linii 22 został użyty operator konkatenacji (kropka) do połączenia trzech ciągów znaków w jeden. Najpierw zostało wykonane dodawanie dwóch liczb w nawiasie, a następnie ich suma została zamieniona na ciąg znaków, który został doklejony do fraz 'bar' i 'foo'. \\
+Przykładowa klasa w PHP: \\
+\begin{minted}[linenos=true, bgcolor=code]{php}
+<?php
+class Telewizor
+{
+	private static $iloscTelewizorow = 0;
+	
+	private $aktualnyKanal = 0;
+	private $poziomGlosnosci = 50;
+	
+	public static function pobierzLiczbeTelewizorow()
+	{
+		return self::$iloscTelewizorow;
+	}
+	
+	public function __construct()
+	{
+		++self::$iloscTelewizorow;
+	}
+	
+	public function ustawGlosnosc($poziomGlosnosci)
+	{
+		$this->poziomGlosnosci = $poziomGlosnosci;
+	}
+	
+	public function ustawKanal($nrKanalu = 0)
+	{
+		$this->aktualnyKanal = $nrKanalu;
+	}
+};
+
+function wyswietlaj()
+{
+	echo 'teraz wyswietlaja '.Telewizor::pobierzLiczbeTelewizorow().' telewizory';
+}
+
+new Telewizor;
+new Telewizor;
+$sharp =  new Telewizor;
+$sharp->ustawKanal();
+$sharp->ustawKanal(13);
+$sharp->ustawGlosnosc(30);
+$sharp->ustawGlosnosc(10);
+
+wyswietlaj();
+?>
+\end{minted}
+Wynik:
+\begin{minted}{php}
+teraz wyswietlaja 3 telewizory
+\end{minted}
+Składnia jest bardzo podobna do tej znanej z C++, za wyjątkiem braków typów zmiennych. W liniach 4 - 7 zostały zadeklarowane i zainicjalizowane domyślnymi wartościami właściwości klasy. W linii 11 jest odwołanie do statycznej właściwości klasy. W PHP dostęp do statycznych pól klasy jest uzyskiwany za pomocą wyrażenia self i operatora dostępu "::". W linii 14 znajduje się konstruktor, którego zadaniem jest zwiększanie ilości stworzonych telewizorów. W PHP konstruktory i destruktory noszą zawsze nazwę \textit{\_\_construct()} i \textit{\_\_destruct()} niezależnie od nazwy klasy. W deklaracji każdej funkcji i metody zawsze znajduje się słowo kluczowe function. W linii 21 jest ustawiany poziom głośności w telewizorze. Dostęp do właściwości obiektów uzyskać można tylko za pomocą wskaźnika \textit{\$this} wskazującego na aktualny obiekt, dostępnego w każdej \textbf{niestatycznej} metodzie klasy. Należy zwrócić uwagę, że gdy odwołujemy się do właściwości klasy za pomocą \textit{\$this} nie używamy już \textit{\$} przed nazwą pola klasy. W linii 24 została zdefiniowana funkcja przyjmująca parametr, który ma już wartość domyślną. Jest to pewien odpowiednik znanego z C++ przeciążania funkcji, gdy kilka funkcji mogło mieć tą samą nazwę - różnił je tylko zestaw argumentów. W PHP przeciążanie funkcji znane z C++ jest niedozwolone, zamiast tego stosuje się wartości domyślne argumentów. Pozwala to na wywołanie funkcji bez podawania argumentów, którym zostały przypisane wartości domyślne w nagłówku funkcji. Przykład takiego wywołania jest w linii 38 i 39.
 
 \end{document}
