@@ -20,6 +20,12 @@ class Thread
 				WHERE `threads`.`author_id`=`users`.`id`
 				ORDER BY `threads`.`id` DESC');
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
+
 		while($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 		{
 			$oThread = new self();
@@ -48,6 +54,11 @@ class Thread
 					ORDER BY `threads`.`id` ASC');
 			$oStatement->bindValue(':id', $iId, PDO::PARAM_INT);
 			$oStatement->execute();
+			if($oStatement->errorCode() != 0)
+			{
+				$aError = $oStatement->errorInfo();
+				throw new Exception($aError[2]);
+			}
 			if($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 			{
 				$this->iAuthorId = $aResult['author_id'];
@@ -73,6 +84,11 @@ class Thread
 					ORDER BY `posts`.`id` ASC');
 		$oStatement->bindValue(':id', $this->iId, PDO::PARAM_INT);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		while($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 		{
 			$oPost = new Post();
@@ -92,6 +108,11 @@ class Thread
 		$oStatement = self::$oConnection->prepare('SELECT * FROM `posts` WHERE `thread_id` = :id ORDER BY `date` DESC');
 		$oStatement->bindValue(':id', $this->iId, PDO::PARAM_INT);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		if($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 		{
 			$oPost = new Post();
@@ -124,6 +145,11 @@ class Thread
 		$oStatement->bindValue(':content', $this->sContent, PDO::PARAM_STR);
 
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		if($this->iId == null)
 			$this->iId = self::$oConnection->lastInsertId();
 		var_dump($oStatement->errorInfo());
@@ -134,9 +160,19 @@ class Thread
 		$oStatement = self::$oConnection->prepare('DELETE FROM `threads` WHERE `id` = :id');
 		$oStatement->bindValue(':id', $this->iId, PDO::PARAM_INT);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		$oStatement = self::$oConnection->prepare('DELETE FROM `posts` WHERE `thread_id` = :id');
 		$oStatement->bindValue(':id', $this->iId, PDO::PARAM_INT);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 	}
 };
 ?>

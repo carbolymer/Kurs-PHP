@@ -19,6 +19,11 @@ class User
 		$oStatement->bindValue(':login', $sLogin, PDO::PARAM_STR);
 		$oStatement->bindValue(':password', sha1($sPassword), PDO::PARAM_STR);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		if($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 		{
 			$oNewUser = new User();
@@ -41,6 +46,11 @@ class User
 		$oStatement->bindValue(':name', $sName, PDO::PARAM_STR);
 		$oStatement->bindValue(':login', $sLogin, PDO::PARAM_STR);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		if($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 		{
 			return false;
@@ -53,6 +63,11 @@ class User
 		$oStatement = self::$oConnection->prepare('SELECT * FROM `users` WHERE `id` = :id');
 		$oStatement->bindValue(':id', $iId, PDO::PARAM_INT);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		if($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 		{
 			$oUser = new User();
@@ -86,6 +101,11 @@ class User
 		$oStatement->bindValue(':is_admin', $this->bIsAdmin, PDO::PARAM_BOOL);
 
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		if($this->iId == null) 
 			$this->iId = self::$oConnection->lastInsertId();
 	}

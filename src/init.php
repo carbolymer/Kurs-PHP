@@ -10,9 +10,9 @@ function init()
 		session_start();
 		//session_destroy();
 		$oDb = new PDO($sConnectionString, $sUser, $sPassword);
-		User::$oConnection = $oDb;
-		Thread::$oConnection = $oDb;
-		Post::$oConnection = $oDb;
+		User::$oConnection = &$oDb;
+		Thread::$oConnection = &$oDb;
+		Post::$oConnection = &$oDb;
 		
 		$oUser = null;
 		if(isset($_SESSION['uid']))

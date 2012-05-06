@@ -23,6 +23,11 @@ class Post
 					ORDER BY `posts`.`id` ASC');
 			$oStatement->bindValue(':id', $iId, PDO::PARAM_INT);
 			$oStatement->execute();
+			if($oStatement->errorCode() != 0)
+			{
+				$aError = $oStatement->errorInfo();
+				throw new Exception($aError[2]);
+			}
 			if($aResult = $oStatement->fetch(PDO::FETCH_ASSOC))
 			{
 				$this->iId = $aResult['pid'];
@@ -56,6 +61,11 @@ class Post
 		$oStatement->bindValue(':content', $this->sContent, PDO::PARAM_STR);
 
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
 		if($this->iId == null) 
 			$this->iId = self::$oConnection->lastInsertId();
 	}
@@ -65,6 +75,12 @@ class Post
 		$oStatement = self::$oConnection->prepare('DELETE FROM `posts` WHERE `id` = :id');
 		$oStatement->bindValue(':id', $this->iId, PDO::PARAM_INT);
 		$oStatement->execute();
+		if($oStatement->errorCode() != 0)
+		{
+			$aError = $oStatement->errorInfo();
+			throw new Exception($aError[2]);
+		}
+		$this->iId = null;
 	}
 };
 ?>

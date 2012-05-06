@@ -33,7 +33,7 @@ try
 
 catch(Exception $e)
 {
-	die('Wystąpił błąd!<br />'.$e->getMessage());
+	die('Wystapil blad!<br />'.$e->getMessage());
 }
 
 ?><!DOCTYPE HTML>
