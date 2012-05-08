@@ -19,10 +19,7 @@ function init()
 		{
 			User::$oCurrentUser = User::findById($_SESSION['uid']);
 			if(!is_object(User::$oCurrentUser))
-			{
 				session_destroy();
-				echo "NISZCZEM KURWA SESJEM";
-			}
 		}
 			
 	}
