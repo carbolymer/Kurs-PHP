@@ -29,7 +29,7 @@ try
 		
 		if(!empty($_POST) && !$bIsAccessDenied)
 		{
-			if(isset($_GET['pid']));
+			if(isset($_GET['pid']))
 			{
 				if(strlen(trim($_POST['content'])) < 3 || strlen(trim($_POST['content'])) > 10000)
 					$sError .= 'Twoja odpowiedź musi mieć conajmniej 3 znaki. <br />';
