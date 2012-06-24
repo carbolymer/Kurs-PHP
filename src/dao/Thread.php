@@ -143,7 +143,7 @@ class Thread
 		$oStatement->bindValue(':aid', $this->iAuthorId, PDO::PARAM_INT);
 		$oStatement->bindValue(':title', $this->sTitle, PDO::PARAM_STR);
 		$oStatement->bindValue(':content', $this->sContent, PDO::PARAM_STR);
-
+		var_dump($this);
 		$oStatement->execute();
 		if($oStatement->errorCode() != 0)
 		{
